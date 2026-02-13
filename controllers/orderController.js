@@ -10,6 +10,7 @@ const { Juspay, APIError } = require('expresscheckout-nodejs');
 const fs = require('fs');
 const { createShiprocketOrder } = require("./shippingController");
 const dotenv = require('dotenv');
+const path = require('path');
 
 dotenv.config();
 
@@ -25,23 +26,38 @@ const config = {
   ENVIRONMENT: process.env.HDFC_ENVIRONMENT || 'SANDBOX'
 };
 
-// Read JWT keys
-const publicKey = process.env.HDFC_PUBLIC_KEY_PATH;
-const privateKey = process.env.HDFC_PRIVATE_KEY_PATH;
+// ✅ CORRECT - Read the actual key content from files
+let publicKey, privateKey;
+
+try {
+  // Resolve paths relative to the project root or use absolute paths
+  const publicKeyPath = path.resolve(config.PUBLIC_KEY_PATH);
+  const privateKeyPath = path.resolve(config.PRIVATE_KEY_PATH);
+  
+  publicKey = fs.readFileSync(publicKeyPath, 'utf8');
+  privateKey = fs.readFileSync(privateKeyPath, 'utf8');
+  
+  console.log('✓ JWT keys loaded successfully');
+} catch (error) {
+  console.error('✗ Failed to load JWT keys:', error.message);
+  console.error('  Public key path:', config.PUBLIC_KEY_PATH);
+  console.error('  Private key path:', config.PRIVATE_KEY_PATH);
+  process.exit(1); // Exit if keys can't be loaded
+}
 
 // Environment URLs
 const SANDBOX_BASE_URL = "https://smartgateway.hdfcuat.bank.in";
 const PRODUCTION_BASE_URL = "https://smartgateway.hdfc.bank.in";
 const BASE_URL = config.ENVIRONMENT === 'PRODUCTION' ? PRODUCTION_BASE_URL : SANDBOX_BASE_URL;
 
-// Initialize Juspay SDK
+// ✅ CORRECT - Initialize Juspay SDK with actual key content
 const juspay = new Juspay({
   merchantId: config.MERCHANT_ID,
   baseUrl: BASE_URL,
   jweAuth: {
     keyId: config.KEY_UUID,
-    publicKey: publicKey,
-    privateKey: privateKey
+    publicKey: publicKey,    // Now contains actual PEM content
+    privateKey: privateKey   // Now contains actual PEM content
   }
 });
 
