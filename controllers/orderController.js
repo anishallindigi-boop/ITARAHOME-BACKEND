@@ -19,15 +19,15 @@ dotenv.config();
 const config = {
   MERCHANT_ID: process.env.HDFC_MERCHANT_ID,
   KEY_UUID: process.env.HDFC_KEY_UUID,
-  PUBLIC_KEY_PATH: process.env.HDFC_PUBLIC_KEY_PATH || './keys/public_key.pem',
-  PRIVATE_KEY_PATH: process.env.HDFC_PRIVATE_KEY_PATH || './keys/private_key.pem',
+  PUBLIC_KEY_PATH: process.env.HDFC_PUBLIC_KEY_PATH,
+  PRIVATE_KEY_PATH: process.env.HDFC_PRIVATE_KEY_PATH,
   PAYMENT_PAGE_CLIENT_ID: process.env.HDFC_PAYMENT_PAGE_CLIENT_ID,
   ENVIRONMENT: process.env.HDFC_ENVIRONMENT || 'SANDBOX'
 };
 
 // Read JWT keys
-const publicKey = fs.readFileSync(config.PUBLIC_KEY_PATH, 'utf8');
-const privateKey = fs.readFileSync(config.PRIVATE_KEY_PATH, 'utf8');
+const publicKey = process.env.HDFC_PUBLIC_KEY_PATH;
+const privateKey = process.env.HDFC_PRIVATE_KEY_PATH;
 
 // Environment URLs
 const SANDBOX_BASE_URL = "https://smartgateway.hdfcuat.bank.in";
