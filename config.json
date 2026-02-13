@@ -1,0 +1,8 @@
+{
+  "MERCHANT_ID": "125059",
+  "KEY_UUID": "key_f3d9ec1f49a5438aa781e3b69f9023c1",
+  "PUBLIC_KEY_PATH": "./key/public_key.pem",
+  "PRIVATE_KEY_PATH": "./key/private_key.pem",
+  "PAYMENT_PAGE_CLIENT_ID": "your_payment_page_client_id_here",
+  "ENVIRONMENT": "SANDBOX"
+}
